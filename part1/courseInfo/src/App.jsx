@@ -28,17 +28,21 @@ const Header = (data) => {
 }
 
 const Content = (data) => {  
-  const parts =  data.info.parts.map( (part, index) =>
-    <p key={index}>
-        {part} {data.info.exercises[index]}
-    </p>
+  const ContentComponent =  data.info.parts.map( (part, index) =>
+    <Part key={index} part={part} exercises={data.info.exercises[index]}/>
   )
 
-  return <>{parts}</>
+  return <div>{ContentComponent}</div>
 }
 
 const Total = (data) => {  
   return <p>Number of exercises {data.total.exercises1 + data.total.exercises2 + data.total.exercises3}</p>
+}
+
+const Part = (props) => {
+  return <p>
+    {props.part} {props.exercises}
+   </p>
 }
 
 export default App
