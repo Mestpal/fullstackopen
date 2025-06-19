@@ -1,22 +1,23 @@
 const App = () => {
   const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+  const part1 = {
+    name: 'Fundamentals of React',
+    exercises: 10
+  }
+  const part2 = {
+    name: 'Using props to pass data',
+    exercises: 7
+  }
+  const part3 = {
+    name: 'State of a component',
+    exercises: 14
+  }
 
   return (
     <div>
       <Header course={course} />
-      <Content info={ 
-        {
-          parts: [part1, part2, part3],
-          exercises: [exercises1, exercises2, exercises3]
-        }
-        } />
-      <Total total={{exercises1, exercises2, exercises3}} /> 
+      <Content info={{ part1, part2, part3}} />
+      <Total total={{ part1, part2, part3}} /> 
     </div>
   )
 }
@@ -27,21 +28,23 @@ const Header = (data) => {
   </>
 }
 
-const Content = (data) => {  
-  const ContentComponent =  data.info.parts.map( (part, index) =>
-    <Part key={index} part={part} exercises={data.info.exercises[index]}/>
+const Content = ({info}) => {  
+  const ContentComponent =  Object.keys(info).map( (entry, index) =>
+    <Part key={index} part={info[entry].name} exercises={info[entry].exercises}/>
   )
 
   return <div>{ContentComponent}</div>
 }
 
-const Total = (data) => {  
-  return <p>Number of exercises {data.total.exercises1 + data.total.exercises2 + data.total.exercises3}</p>
+const Total = ({total}) => {
+  const sum = Object.keys(total)
+    .reduce((amount, step) => amount += total[step].exercises, 0)
+  return <p>Number of exercises {sum}</p>
 }
 
-const Part = (props) => {
+const Part = ({part, exercises}) => {
   return <p>
-    {props.part} {props.exercises}
+    {part} {exercises}
    </p>
 }
 
