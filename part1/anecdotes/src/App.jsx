@@ -11,9 +11,9 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState([...Array(anecdotes.length)].map(()=> 0))
+  const [maxPosition, setMaxPosition] = useState(0)
 
 
   function updateSelected() {
@@ -25,6 +25,9 @@ const App = () => {
     const newVotes = [...votes]
     newVotes[selected] += 1
     setVotes(newVotes)
+
+    const maxVotes =  Math.max(...newVotes)
+    setMaxPosition(newVotes.indexOf(maxVotes))
   }
 
   return <>
@@ -32,6 +35,8 @@ const App = () => {
     <h3> has {votes[selected]} votes</h3>
     <Button text="vote" action={updateVotes}/>
     <Button text="next anecdote" action={updateSelected}/>
+    <h1> Anecdote with most votes</h1>
+    {anecdotes[maxPosition]}
   </>
 }
 
