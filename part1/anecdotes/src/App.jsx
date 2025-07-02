@@ -13,15 +13,25 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState([...Array(anecdotes.length)].map(()=> 0))
+
 
   function updateSelected() {
     const nextSelected = getRandomInt(anecdotes.length)
     setSelected(nextSelected)
   }
 
+  function updateVotes() {
+    const newVotes = [...votes]
+    newVotes[selected] += 1
+    setVotes(newVotes)
+  }
+
   return <>
     <h1>{anecdotes[selected]} </h1>
-    <Button pool={anecdotes} update={updateSelected}/>
+    <h3> has {votes[selected]} votes</h3>
+    <Button text="vote" action={updateVotes}/>
+    <Button text="next anecdote" action={updateSelected}/>
   </>
 }
 
@@ -29,10 +39,9 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-const Button = ({update}) => {  
-
-  return  <button onClick={() => update()}>
-    next anecdote
+const Button = ({action, text}) => {
+  return  <button onClick={() => action()}>
+    {text}
   </button>
 }
 
