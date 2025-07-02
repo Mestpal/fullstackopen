@@ -29,17 +29,22 @@ const ButtonGrade = ({text, value, action}) =>
 
 const Statistics = ({good, neutral, bad}) => {
   const all = good + neutral + bad
-  const average = ((good - bad)/all) || 0
-  const positive = (good / all)*100 || 0
-
-  return <div>
-    <h1>Statistics</h1>
-    good {good}<br/>
-    neutral {neutral}<br/>
-    bad {bad} <br/>
-    all {all} <br/>
-    average {average } <br/>
-    positive {positive} %
-  </div>}
+  const average = ((good - bad)/all)
+  const positive = (good / all)*100
+  
+  if (!all) {
+    return <p> No feedback given </p>
+  } else {
+    return <div>
+      <h1>Statistics</h1>
+      good {good}<br/>
+      neutral {neutral}<br/>
+      bad {bad} <br/>
+      all {all} <br/>
+      average {average } <br/>
+      positive {positive} %
+    </div>
+  }
+}
 
 export default App
