@@ -1,4 +1,4 @@
-const Header = (props) => <h1>{props.course}</h1>
+const Header = (props) => <h2>{props.course}</h2>
 
 const Content = (props) => {
   return props.parts.map((part) => <Part key={part.id} part={part} />)
