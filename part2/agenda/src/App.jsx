@@ -15,6 +15,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [message, setMessage] = useState('')
   const [showMessage, setShowMessage] = useState(false)
+  const [error, setError] = useState(false)
 
   const getAllContacts = () => {
    personServices.getAll()
@@ -79,6 +80,10 @@ const App = () => {
             getAllContacts()
             showNotification(`Updated ${newName}`)
           })
+          .catch(() => {
+            setError(true)
+            showNotification(`Information of ${newName} has already been deleted from the server`)
+          })
       }
     }
   }
@@ -94,13 +99,14 @@ const App = () => {
     setTimeout(() => {
       setShowMessage(false)
       setMessage('')
+      setError(false)
     }, 1000)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} show={showMessage}/> 
+      <Notification message={message} show={showMessage} error={error}/> 
       <Filter filter={filter} action={onChangeFilter}/>
       <h2>Add a new</h2>
       <PersonForm newName={newName} newNumber={newNumber} actionName={onChangeName} actionNumber={onChangeNumber} submit={onSubmitForm}/>
