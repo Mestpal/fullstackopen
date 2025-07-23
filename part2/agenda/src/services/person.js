@@ -6,8 +6,8 @@ function getAll() {
   return request.then(response => response.data)
 }
 
-function create(newPerson) {
-  const request = axios.post(baseUrl, newPerson)
+function create(person) {
+  const request = axios.post(baseUrl, person)
   return request.then(response => response.data)
 }
 
@@ -16,4 +16,9 @@ function deletePerson(id) {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, deletePerson}
+function updatePerson(person) {
+  const request = axios.put(`${baseUrl}/${person.id}`, person)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, deletePerson, updatePerson}
