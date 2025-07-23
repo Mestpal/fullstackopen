@@ -10,13 +10,14 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
-  const getContacs = () => {
+  const getAllContacts = () => {
    personServices.getAll()
     .then( persons => setPersons(persons))
   }
 
-  useEffect(getContacs, [])
+  useEffect(getAllContacts, [])
 
+  const getContacts = () => filter ? filteredResults(): persons
   const onChangeName = (event) => setNewName(event.target.value);
   const onChangeNumber = (event) => setNewNumber(event.target.value);
   const onChangeFilter = (event) => setFilter(event.target.value)
@@ -24,23 +25,35 @@ const App = () => {
   const filteredResults = () => persons.filter((person) => 
     person.name.toLowerCase().includes(filter.toLowerCase())
   )
+  
+  const deleteContact = (person) => {
+    const isConfirm = confirm(`Delete ${person.name}`)
 
-  const getContacts = () => filter ? filteredResults(): persons
+    if (isConfirm) {
+      personServices
+        .deletePerson(person.id)
+        .then(() => getAllContacts()) 
+    }
+  }
 
   const onSubmitForm = (event) => {
     event.preventDefault()
     const names = persons.map((person) => person.name)    
     
-    if (!names.includes(newName)) {      
+    if (!names.includes(newName)) {
       const newPerson = {
         name: newName,
         number: newNumber
       }
 
-      personServices.create(newPerson)
-      setPersons(persons.concat(newPerson))
-      setNewName("")
-      setNewNumber("")
+      personServices
+        .create(newPerson)
+        .then(() => {
+          setPersons(persons.concat(newPerson))
+          setNewName("")
+          setNewNumber("")
+          getAllContacts()
+        }) 
     } else{
       alert(`${newName} is already added to phonebook`)
     }
@@ -53,7 +66,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm newName={newName} newNumber={newNumber} actionName={onChangeName} actionNumber={onChangeNumber} submit={onSubmitForm}/>
       <h2>Numbers</h2>
-      <Contacts contacts={getContacts()}/>
+      <Contacts contacts={getContacts()} action={deleteContact}/>
     </div>
   )
 }
