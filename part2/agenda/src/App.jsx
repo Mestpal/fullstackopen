@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
+import "./index.css";
+
+
 import Contacts from './components/contacts'
 import Filter from './components/filter'
+import Notification from "./components/notification";
 import PersonForm from './components/personForm'
 import personServices from './services/person'
 
@@ -9,6 +13,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState('')
+  const [showMessage, setShowMessage] = useState(false)
 
   const getAllContacts = () => {
    personServices.getAll()
@@ -52,12 +58,12 @@ const App = () => {
           setPersons(persons.concat(newPerson))
           resetContactForm()
           getAllContacts()
-        }) 
+          showNotification(`Added ${newName}`)
+        })
     } else {
       const isUpdate = confirm(`${newPerson.name} is already added to the phonebook, replace the old number with the new one?`)
 
       if (isUpdate) {
-
         const actualPerson = persons.find(person => newPerson.name === person.name)
         
         newPerson = {
@@ -71,7 +77,8 @@ const App = () => {
           .then(() => {
             resetContactForm()
             getAllContacts()
-          }) 
+            showNotification(`Updated ${newName}`)
+          })
       }
     }
   }
@@ -81,9 +88,19 @@ const App = () => {
     setNewNumber("")
   }
 
+  const showNotification = (message) => {    
+    setShowMessage(true)
+    setMessage(message)
+    setTimeout(() => {
+      setShowMessage(false)
+      setMessage('')
+    }, 1000)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} show={showMessage}/> 
       <Filter filter={filter} action={onChangeFilter}/>
       <h2>Add a new</h2>
       <PersonForm newName={newName} newNumber={newNumber} actionName={onChangeName} actionNumber={onChangeNumber} submit={onSubmitForm}/>
