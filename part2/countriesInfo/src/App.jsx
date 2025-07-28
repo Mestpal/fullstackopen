@@ -34,12 +34,12 @@ const App = () => {
   ))
 
   useEffect(getAllCountries, [])
-  useEffect(getFilteredCountries, [filter])
+  useEffect(getFilteredCountries, [countriesList, filter])
   useEffect(getCountry, [filteredList])
   
   return <div>
     <div>Find Countries <input value={filter} onChange={onChangeFilter}/> </div>
-    <ShowCountries filter={filter} list={filteredList} country={country}/>
+    <ShowCountries filter={filter} list={filteredList} country={country} action={setFilter}/>
   </div>
 }
 
