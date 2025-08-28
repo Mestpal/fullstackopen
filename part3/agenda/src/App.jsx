@@ -61,6 +61,10 @@ const App = () => {
           getAllContacts()
           showNotification(`Added ${newName}`)
         })
+        .catch(error => {
+          setError(true)
+          showNotification(error.response.data.error)
+        })
     } else {
       const isUpdate = confirm(`${newPerson.name} is already added to the phonebook, replace the old number with the new one?`)
 
@@ -100,7 +104,7 @@ const App = () => {
       setShowMessage(false)
       setMessage('')
       setError(false)
-    }, 1000)
+    }, 5000)
   }
 
   return (
